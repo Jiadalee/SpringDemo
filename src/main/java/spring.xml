@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd" default-autowire="byName" default-init-method="myInit" default-destroy-method="cleanUp">
+    <context:annotation-config/>
+    
+    <bean id = "parenttriangle" class="org.jiadali.javabrians.Triangle" abstract = "true" autowire="byName" init-method="myInit" destroy-method="cleanUp">
+        <property name="points">
+            <list>
+                <ref bean = "pointA"/>  
+            </list>
+        </property>
+    </bean>
+    
+    
+    <bean id = "triangle1" class="org.jiadali.javabrians.Triangle" parent="parenttriangle" >
+        <property name="points">
+            <list merge = "true">
+                <ref bean = "pointB"/>  
+            </list>
+        </property>
+    </bean>
+    
+    
+    <bean id = "triangle2" class="org.jiadali.javabrians.Triangle" parent="parenttriangle">
+        <property name="pointB" ref="pointB"/>
+    </bean>
+    
+    
+    <bean id = "pointA" class = "org.jiadali.javabrains.Point">
+        <property name = "x" value="0" />
+        <property name = "y" value="0" />
+    </bean>
+    
+    <bean id = "pointB" class = "org.jiadali.javabrains.Point“>
+        <property name = "x" value="-20" />
+        <property name = "y" value="0" />
+    </bean>
+    
+    <bean id = "center" class = "org.jiadali.javabrains.Point“>
+        <property name = "x" value="0" />
+        <property name = "y" value="20" />
+    </bean>
+    
+    <bean class="org.jiadali.javabrains.DisplayNameBeanPostProcessor" />
+        
+    <alias name="triangle" alias="triangle-alias" />
+   
+    <bean id = "circle" class="org.jiadali.javabrians.Circle">
+        <property name="center" ref="pointB"/>
+    </bean>
+    
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" />
+    <property name="basenames">
+        <list>
+            <value>mymessages</value>
+        </list>
+    </property>
+    </beans>
+    
+    <context:annotation-config/>
+    <context:component-scan base-package="org.jiadali.javabrains"/>
+    
+</beans>
